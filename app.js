@@ -14,3 +14,18 @@ time_line
 setTimeout(() => {
     animation.style.pointerEvents = "none";
 }, 2500);
+
+//整個網站的enter無法使用
+window.addEventListener("keypress", (e) => {
+    if (e.key == "Enter") {
+        e.preventDefault();
+    }
+});
+
+//防止form的button做submit
+let allButtons = document.querySelectorAll("button");
+allButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+        e.preventDefault();
+    });
+});
