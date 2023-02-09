@@ -27,6 +27,38 @@ body {
   color: white;
   font-family: "Balsamiq Sans", cursive;
 }
+body section.animation-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+body section.animation-wrapper section.animation {
+  margin-top: 10vh;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body section.animation-wrapper section.animation .hero {
+  width: 100%;
+  height: 0;
+}
+body section.animation-wrapper section.animation .hero img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+body section.animation-wrapper .slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to right, rgb(144, 143, 140), rgb(0, 0, 0));
+  z-index: -1;
+}
 body header nav {
   box-shadow: 0 8px 6px -6px black;
 }
@@ -56,7 +88,8 @@ body main h1 {
 body main p {
   font-size: 1.15rem;
 }
-body main div.all-inputs form input, body main div.all-inputs form select {
+body main div.all-inputs form input,
+body main div.all-inputs form select {
   font-size: 1.05rem;
   padding: 0.5rem;
   border: 0.25px solid rgb(38, 38, 20);
@@ -93,9 +126,12 @@ body main div.result {
   border: 3px solid red;
   border-radius: 50%;
   text-align: center;
-  animation-name: border_color;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
+  -webkit-animation-name: border_color;
+          animation-name: border_color;
+  -webkit-animation-duration: 6s;
+          animation-duration: 6s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
 }
 body main div.result p {
   margin-top: 15px;
@@ -103,6 +139,18 @@ body main div.result p {
 body main div.result h2#result-gpa {
   font-size: 3.5rem;
   font-weight: bold;
+}
+
+@-webkit-keyframes border_color {
+  0% {
+    border-color: red;
+  }
+  33% {
+    border-color: green;
+  }
+  66% {
+    border-color: yellow;
+  }
 }
 
 @keyframes border_color {
