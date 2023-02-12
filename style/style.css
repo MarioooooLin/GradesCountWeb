@@ -126,12 +126,9 @@ body main div.result {
   border: 3px solid red;
   border-radius: 50%;
   text-align: center;
-  -webkit-animation-name: border_color;
-          animation-name: border_color;
-  -webkit-animation-duration: 6s;
-          animation-duration: 6s;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  animation-name: border_color;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
 }
 body main div.result p {
   margin-top: 15px;
@@ -141,18 +138,27 @@ body main div.result h2#result-gpa {
   font-weight: bold;
 }
 
-@-webkit-keyframes border_color {
-  0% {
-    border-color: red;
-  }
-  33% {
-    border-color: green;
-  }
-  66% {
-    border-color: yellow;
-  }
+.remove {
+  transform: scale(0);
+  transition: all 0.5s ease;
 }
 
+@keyframes scaleUp {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes scaleDown {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
 @keyframes border_color {
   0% {
     border-color: red;
