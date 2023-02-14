@@ -270,3 +270,35 @@ allTrash.forEach((trash) => {
         setGPA();
     });
 });
+
+//排序演算法 Merge sort
+let btn1 = document.querySelector(".sort-descending");
+let btn2 = document.querySelector(".sort-ascending");
+btn1.addEventListener("click", () => {
+    handleSorting("descending");
+});
+btn2.addEventListener("click", () => {
+    handleSorting("ascending");
+});
+
+function handleSorting(direction) {
+    let graders = document.querySelectorAll("div.grader");
+    let objArray = [];
+    for (let i = 0; i < graders.length; i++) {
+        let class_name = graders[i].children[0].value;
+        let class_number = graders[i].children[1].value;
+        let class_credit = graders[i].children[2].value;
+        let class_grade = graders[i].children[3].value;
+
+        let class_obj = {
+            // class_name: class_name,
+            // class_number: class_number,
+            // class_credit: class_credit,
+            // class_grade: class_grade,
+            class_name,
+            class_number,
+            class_credit,
+            class_grade,
+        };
+    }
+}
