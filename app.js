@@ -284,21 +284,131 @@ btn2.addEventListener("click", () => {
 function handleSorting(direction) {
     let graders = document.querySelectorAll("div.grader");
     let objArray = [];
+
     for (let i = 0; i < graders.length; i++) {
         let class_name = graders[i].children[0].value;
         let class_number = graders[i].children[1].value;
         let class_credit = graders[i].children[2].value;
         let class_grade = graders[i].children[3].value;
 
-        let class_obj = {
-            // class_name: class_name,
-            // class_number: class_number,
-            // class_credit: class_credit,
-            // class_grade: class_grade,
-            class_name,
-            class_number,
-            class_credit,
-            class_grade,
-        };
+        if (!(class_name == "" && class_number == "" && class_credit == "" && class_grade == "")) {
+            let class_obj = {
+                // class_name: class_name,
+                // class_number: class_number,
+                // class_credit: class_credit,
+                // class_grade: class_grade,
+                class_name,
+                class_number,
+                class_credit,
+                class_grade,
+            };
+            objArray.push(class_obj);
+        }
+
+        //把成績換成數字
+        for (let i = 0; i < objArray.length; i++) {
+            objArray[i].class_grade_number = convertor(objArray[i].class_grade);
+        }
+
+        //排序
+        objArray = mergeSort(objArray);
+        if (direction == "descending") {
+            objArray = objArray.reverse();
+            console.log(objArray);
+        }
+
+        //根據array內容更新網頁
+        let allInputs = document.querySelector(".all-inputs");
+        allInputs.innerHTML = "";
+
+        for (let i = 0; i < objArray.length; i++) {
+            allInputs.innerHTML += `<form>
+            <div class="grader">
+                <input
+                type="text"
+                placeholder="class category"
+                class="class-type"
+                list="opt"
+                value=${objArray[i].class_name}
+                /><!--
+                --><input
+                type="text"
+                placeholder="class number"
+                class="class-number"
+                value=${objArray[i].class_number}
+                /><!--
+                --><input
+                type="number"
+                placeholder="credits"
+                min="0"
+                max="6"
+                class="class-credit"
+                value=${objArray[i].class_credit}
+                /><!--
+                --><select name="select" class="select">
+                <option value=""></option>
+                <option value="A">A</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="B-">B-</option>
+                <option value="C+">C+</option>
+                <option value="C">C</option>
+                <option value="C-">C-</option>
+                <option value="D+">D+</option>
+                <option value="D">D</option>
+                <option value="D-">D-</option>
+                <option value="F">F</option></select
+                ><!--
+                --><button class="trash-button">
+                <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            </form>`;
+        }
+
+        graders = document.querySelectorAll("div.grader");
+        for (let i = 0; i < graders.length; i++) {
+            graders[i].children[3].value = objArray[i].class_grade;
+        }
+    }
+}
+
+function merge(a1, a2) {
+    let result = [];
+    let i = 0;
+    let j = 0;
+
+    while (i < a1.length && j < a2.length) {
+        if (a1[i].class_grade_number > a2[j].class_grade_number) {
+            result.push(a2[j]);
+            j++;
+        } else {
+            result.push(a1[i]);
+            i++;
+        }
+    }
+    while (i < a1.length) {
+        result.push(a1[i]);
+        i++;
+    }
+    while (j < a2.length) {
+        result.push(a2[j]);
+        j++;
+    }
+    return result;
+}
+
+function mergeSort(arr) {
+    if (arr.length == 0) {
+        return;
+    }
+    if (arr.length == 1) {
+        return arr;
+    } else {
+        let middle = Math.floor(arr.length / 2);
+        let left = arr.slice(0, middle);
+        let right = arr.slice(middle, arr.length);
+        return merge(mergeSort(left), mergeSort(right));
     }
 }
