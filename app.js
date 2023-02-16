@@ -259,8 +259,7 @@ addButton.addEventListener("click", () => {
 let allTrash = document.querySelectorAll(".trash-button");
 allTrash.forEach((trash) => {
     trash.addEventListener("click", (e) => {
-        e.target.parentElement.parentElement.classlist.add("remove");
-        //e.target.parentElement.parentElement.remove()
+        e.target.parentElement.parentElement.classList.add("remove");
     });
 });
 allTrash.forEach((trash) => {
@@ -275,103 +274,128 @@ allTrash.forEach((trash) => {
 let btn1 = document.querySelector(".sort-descending");
 let btn2 = document.querySelector(".sort-ascending");
 btn1.addEventListener("click", () => {
-    handleSorting("descending");
+    handleSorting("descending"); // 大到小
 });
 btn2.addEventListener("click", () => {
-    handleSorting("ascending");
+    handleSorting("ascending"); // 小到大
 });
 
 function handleSorting(direction) {
     let graders = document.querySelectorAll("div.grader");
-    let objArray = [];
+    let objectArray = [];
 
     for (let i = 0; i < graders.length; i++) {
-        let class_name = graders[i].children[0].value;
-        let class_number = graders[i].children[1].value;
+        let class_name = graders[i].children[0].value; // class category
+        let class_number = graders[i].children[1].value; // class number
         let class_credit = graders[i].children[2].value;
         let class_grade = graders[i].children[3].value;
 
         if (!(class_name == "" && class_number == "" && class_credit == "" && class_grade == "")) {
-            let class_obj = {
-                // class_name: class_name,
-                // class_number: class_number,
-                // class_credit: class_credit,
-                // class_grade: class_grade,
+            let class_object = {
                 class_name,
                 class_number,
                 class_credit,
                 class_grade,
             };
-            objArray.push(class_obj);
-        }
-
-        //把成績換成數字
-        for (let i = 0; i < objArray.length; i++) {
-            objArray[i].class_grade_number = convertor(objArray[i].class_grade);
-        }
-
-        //排序
-        objArray = mergeSort(objArray);
-        if (direction == "descending") {
-            objArray = objArray.reverse();
-            console.log(objArray);
-        }
-
-        //根據array內容更新網頁
-        let allInputs = document.querySelector(".all-inputs");
-        allInputs.innerHTML = "";
-
-        for (let i = 0; i < objArray.length; i++) {
-            allInputs.innerHTML += `<form>
-            <div class="grader">
-                <input
-                type="text"
-                placeholder="class category"
-                class="class-type"
-                list="opt"
-                value=${objArray[i].class_name}
-                /><!--
-                --><input
-                type="text"
-                placeholder="class number"
-                class="class-number"
-                value=${objArray[i].class_number}
-                /><!--
-                --><input
-                type="number"
-                placeholder="credits"
-                min="0"
-                max="6"
-                class="class-credit"
-                value=${objArray[i].class_credit}
-                /><!--
-                --><select name="select" class="select">
-                <option value=""></option>
-                <option value="A">A</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="B-">B-</option>
-                <option value="C+">C+</option>
-                <option value="C">C</option>
-                <option value="C-">C-</option>
-                <option value="D+">D+</option>
-                <option value="D">D</option>
-                <option value="D-">D-</option>
-                <option value="F">F</option></select
-                ><!--
-                --><button class="trash-button">
-                <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            </form>`;
-        }
-
-        graders = document.querySelectorAll("div.grader");
-        for (let i = 0; i < graders.length; i++) {
-            graders[i].children[3].value = objArray[i].class_grade;
+            objectArray.push(class_object);
         }
     }
+
+    // 取得object array後，我們可以把成績String換成數字
+    for (let i = 0; i < objectArray.length; i++) {
+        objectArray[i].class_grade_number = convertor(objectArray[i].class_grade);
+    }
+
+    objectArray = mergeSort(objectArray);
+    if (direction == "descending") {
+        objectArray = objectArray.reverse();
+    }
+    // 根據object array的內容，來更新網頁
+    let allInputs = document.querySelector(".all-inputs");
+    allInputs.innerHTML = "";
+
+    for (let i = 0; i < objectArray.length; i++) {
+        allInputs.innerHTML += `<form>
+    <div class="grader">
+        <input
+        type="text"
+        placeholder="class category"
+        class="class-type"
+        list="opt"
+        value=${objectArray[i].class_name}
+        /><!--
+        --><input
+        type="text"
+        placeholder="class number"
+        class="class-number"
+        value=${objectArray[i].class_number}
+        /><!--
+        --><input
+        type="number"
+        placeholder="credits"
+        min="0"
+        max="6"
+        class="class-credit"
+        value=${objectArray[i].class_credit}
+        /><!--
+        --><select name="select" class="select">
+        <option value=""></option>
+        <option value="A">A</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B">B</option>
+        <option value="B-">B-</option>
+        <option value="C+">C+</option>
+        <option value="C">C</option>
+        <option value="C-">C-</option>
+        <option value="D+">D+</option>
+        <option value="D">D</option>
+        <option value="D-">D-</option>
+        <option value="F">F</option></select
+        ><!--
+        --><button class="trash-button">
+        <i class="fas fa-trash"></i>
+        </button>
+    </div>
+    </form>`;
+    }
+
+    // SELECT可直接用JS更改
+    graders = document.querySelectorAll("div.grader");
+    for (let i = 0; i < graders.length; i++) {
+        graders[i].children[3].value = objectArray[i].class_grade;
+    }
+
+    // select事件監聽
+    allSelects = document.querySelectorAll("select");
+    allSelects.forEach((select) => {
+        changeColor(select);
+        select.addEventListener("change", (e) => {
+            setGPA();
+            changeColor(e.target);
+        });
+    });
+
+    // credit事件監聽
+    let allCredits = document.querySelectorAll(".class-credit");
+    allCredits.forEach((credit) => {
+        credit.addEventListener("change", () => {
+            setGPA();
+        });
+    });
+
+    // 垃圾桶
+    let allTrash = document.querySelectorAll(".trash-button");
+    allTrash.forEach((trash) => {
+        trash.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.target.parentElement.parentElement.style.animation = "scaleDown 0.5s ease forwards";
+            e.target.parentElement.parentElement.addEventListener("animationend", (e) => {
+                e.target.remove();
+                setGPA();
+            });
+        });
+    });
 }
 
 function merge(a1, a2) {
@@ -388,6 +412,7 @@ function merge(a1, a2) {
             i++;
         }
     }
+
     while (i < a1.length) {
         result.push(a1[i]);
         i++;
@@ -396,6 +421,7 @@ function merge(a1, a2) {
         result.push(a2[j]);
         j++;
     }
+
     return result;
 }
 
@@ -403,6 +429,7 @@ function mergeSort(arr) {
     if (arr.length == 0) {
         return;
     }
+
     if (arr.length == 1) {
         return arr;
     } else {
